@@ -1,0 +1,14 @@
+{
+  "name": "Dark Theme",
+  "version": "1.0.0",
+  "description": "A modern dark theme with high contrast",
+  "templates": {
+    "layout": "layout.ejs",
+    "blogList": "blog-list.ejs",
+    "blogPost": "blog-post.ejs",
+    "page": "page.ejs",
+    "404": "404.ejs"
+  },
+  "styles": ["styles.css"],
+  "scripts": []
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theme Management - Markdown Blog System</title>
+  <link rel="stylesheet" href="/static/admin/admin.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <h1>Theme Management</h1>
+      <div class="user-info">
+        <span>Welcome, <%= user.name || user.email %></span>
+        <a href="/logout" class="btn btn-secondary btn-small">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <a href="/admin" class="back-link">← Back to Dashboard</a>
+      <a href="/admin/settings" class="btn btn-secondary btn-small">Settings</a>
+    </div>
+
+    <% if (success) { %>
+      <div class="success-message">
+        <%= success %>
+      </div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="error-message">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <div class="section">
+      <h2>Available Themes</h2>
+      
+      <% if (availableThemes.length > 0) { %>
+        <div class="themes-grid">
+          <% availableThemes.forEach(theme => { %>
+            <div class="theme-card <%= theme.name === activeTheme ? 'active' : '' %>">
+              <div class="theme-name"><%= theme.displayName %></div>
+              <div class="theme-version">Version <%= theme.version %></div>
+              
+              <div class="theme-info">
+                <p><strong>Theme ID:</strong> <%= theme.name %></p>
+                <% if (theme.config.description) { %>
+                  <p><strong>Description:</strong> <%= theme.config.description %></p>
+                <% } %>
+              </div>
+              
+              <div class="theme-actions">
+                <% if (theme.name === activeTheme) { %>
+                  <button class="btn btn-success btn-small" disabled>Currently Active</button>
+                <% } else { %>
+                  <form method="POST" action="/admin/themes/activate" style="display: inline;">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="themeName" value="<%= theme.name %>">
+                    <button type="submit" class="btn btn-primary btn-small" onclick="return confirm('Switch to <%= theme.displayName %>?')">
+                      Activate Theme
+                    </button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">
+          <p>No themes found.</p>
+          <p style="font-size: 0.9rem;">Add theme directories to the <code>themes/</code> folder to see them here.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

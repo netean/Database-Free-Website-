@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/themes/default/styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="site-title"><a href="/"><%= siteName || 'My Blog' %></a></h1>
+      <nav>
+        <a href="/">Home</a>
+        <% if (pages && pages.length > 0) { %>
+          <% pages.forEach(page => { %>
+            <a href="/page/<%= page.slug %>"><%= page.title %></a>
+          <% }) %>
+        <% } %>
+        <a href="/admin">Admin</a>
+      </nav>
+    </div>
+  </header>
+  
+  <main class="container">
+    <article class="page">
+      <header class="page-header">
+        <h2><%= title %></h2>
+      </header>
+      
+      <div class="page-content">
+        <%- content %>
+      </div>
+    </article>
+  </main>
+  
+  <footer>
+    <div class="container">
+      <p>&copy; <%= new Date().getFullYear() %> <%= siteName || 'My Blog' %>. <%= footerText || 'Powered by Markdown' %>.</p>
+    </div>
+  </footer>
+</body>
+</html>

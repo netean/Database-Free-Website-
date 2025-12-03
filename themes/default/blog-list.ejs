@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog</title>
+  <link rel="stylesheet" href="/themes/default/styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="site-title"><a href="/"><%= siteName || 'My Blog' %></a></h1>
+      <nav>
+        <a href="/">Home</a>
+        <% if (pages && pages.length > 0) { %>
+          <% pages.forEach(page => { %>
+            <a href="/page/<%= page.slug %>"><%= page.title %></a>
+          <% }) %>
+        <% } %>
+        <a href="/admin">Admin</a>
+      </nav>
+    </div>
+  </header>
+  
+  <main class="container">
+    <div class="blog-list">
+      <h2>Recent Posts</h2>
+      
+      <% if (entries && entries.length > 0) { %>
+        <div class="posts">
+          <% entries.forEach(entry => { %>
+            <article class="post-preview">
+              <h3><a href="/blog/<%= entry.slug %>"><%= entry.title %></a></h3>
+              <div class="post-meta">
+                <time datetime="<%= entry.date %>">
+                  <%= new Date(entry.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                </time>
+              </div>
+              <% if (entry.excerpt) { %>
+                <p class="excerpt"><%= entry.excerpt %></p>
+              <% } %>
+              <a href="/blog/<%= entry.slug %>" class="read-more">Read more →</a>
+            </article>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="no-posts">No blog posts yet. Check back soon!</p>
+      <% } %>
+    </div>
+  </main>
+  
+  <footer>
+    <div class="container">
+      <p>&copy; <%= new Date().getFullYear() %> <%= siteName || 'My Blog' %>. <%= footerText || 'Powered by Markdown' %>.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "Default Theme",
+  "version": "1.0.0",
+  "templates": {
+    "layout": "layout.ejs",
+    "blogList": "blog-list.ejs",
+    "blogPost": "blog-post.ejs",
+    "page": "page.ejs",
+    "404": "404.ejs"
+  },
+  "styles": ["styles.css"],
+  "scripts": []
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Content - Markdown Blog System</title>
+  <link rel="stylesheet" href="/static/admin/admin.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <h1>Edit Content</h1>
+      <div class="user-info">
+        <span>Welcome, <%= user.name || user.email %></span>
+        <a href="/logout" class="btn btn-secondary btn-small">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="form-container">
+      <div class="form-header">
+        <h2>Edit: <%= contentItem.title %></h2>
+        <a href="/admin" class="btn btn-secondary">Back to Dashboard</a>
+      </div>
+
+      <% if (error) { %>
+        <div class="error-message">
+          <strong>Error:</strong> <%= error %>
+        </div>
+      <% } %>
+
+      <div class="info-box">
+        <strong>Note:</strong> The filename will be preserved when you save changes. 
+        Changes to the title will update the front matter but not the file name.
+      </div>
+
+      <form method="POST" action="/admin/edit/<%= contentItem.slug %>">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        
+        <div class="form-group">
+          <label for="title">Title *</label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            value="<%= contentItem.title %>" 
+            required
+          >
+          <div class="help-text">The display title for your content</div>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type *</label>
+          <select id="type" name="type" required>
+            <option value="blog" <%= contentItem.type === 'blog' ? 'selected' : '' %>>Blog Entry</option>
+            <option value="page" <%= contentItem.type === 'page' ? 'selected' : '' %>>Page</option>
+          </select>
+          <div class="help-text">Content type (blog entry or static page)</div>
+        </div>
+
+        <div class="form-group">
+          <label for="content">Content *</label>
+          <textarea 
+            id="content" 
+            name="content" 
+            required
+          ><%= rawContent %></textarea>
+          <div class="help-text">Write your content in Markdown format</div>
+        </div>
+
+        <div class="form-actions">
+          <a href="/admin" class="btn btn-secondary">Cancel</a>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

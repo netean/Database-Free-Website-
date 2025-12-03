@@ -1,0 +1,29 @@
+[Unit]
+Description=Markdown Blog System
+Documentation=https://github.com/yourusername/markdown-blog-system
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/markdown-blog-system
+ExecStart=/usr/bin/node --max-old-space-size=192 server.js
+Restart=on-failure
+RestartSec=10
+
+# Environment
+Environment=NODE_ENV=production
+EnvironmentFile=/home/pi/markdown-blog-system/.env
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=markdown-blog
+
+[Install]
+WantedBy=multi-user.target

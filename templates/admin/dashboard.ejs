@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <title>Admin Dashboard - Markdown Blog System</title>
+  <link rel="stylesheet" href="/static/admin/admin.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <h1>Admin Dashboard</h1>
+      <div class="user-info">
+        <span>Welcome, <%= user.name || user.email %></span>
+        <a href="/logout" class="btn btn-secondary btn-small">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="actions-bar">
+      <h2 style="margin: 0; font-size: 1.2rem;">Content Management</h2>
+      <div style="display: flex; gap: 0.5rem;">
+        <a href="/admin/settings" class="btn btn-secondary">Settings</a>
+        <a href="/admin/themes" class="btn btn-secondary">Themes</a>
+        <a href="/admin/create" class="btn btn-primary">+ Create New</a>
+      </div>
+    </div>
+
+    <!-- Blog Entries Section -->
+    <div class="section">
+      <h2>Blog Entries (<%= blogEntries.length %>)</h2>
+      <% if (blogEntries.length > 0) { %>
+        <form id="reorder-form-blog">
+          <table class="content-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Order</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% blogEntries.forEach(entry => { %>
+                <tr>
+                  <td><strong><%= entry.title %></strong></td>
+                  <td><span class="content-type blog">Blog</span></td>
+                  <td><%= entry.date ? new Date(entry.date).toLocaleDateString() : 'N/A' %></td>
+                  <td>
+                    <input 
+                      type="number" 
+                      class="order-input" 
+                      name="order-<%= entry.slug %>" 
+                      value="<%= entry.order || 0 %>" 
+                      data-slug="<%= entry.slug %>"
+                      min="0"
+                      step="1"
+                    />
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <a href="/admin/edit/<%= entry.slug %>" class="btn btn-primary btn-small">Edit</a>
+                      <button type="button" class="btn btn-danger btn-small" onclick="confirmDelete('<%= entry.slug %>', '<%= entry.title %>')">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          <button type="submit" class="btn btn-primary save-order-btn">Save Order</button>
+        </form>
+      <% } else { %>
+        <div class="empty-state">
+          <p>No blog entries yet.</p>
+          <a href="/admin/create" class="btn btn-primary">Create your first blog post</a>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Pages Section -->
+    <div class="section">
+      <h2>Pages (<%= pages.length %>)</h2>
+      <% if (pages.length > 0) { %>
+        <form id="reorder-form-pages">
+          <table class="content-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Order</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% pages.forEach(page => { %>
+                <tr>
+                  <td><strong><%= page.title %></strong></td>
+                  <td><span class="content-type page">Page</span></td>
+                  <td><%= page.date ? new Date(page.date).toLocaleDateString() : 'N/A' %></td>
+                  <td>
+                    <input 
+                      type="number" 
+                      class="order-input" 
+                      name="order-<%= page.slug %>" 
+                      value="<%= page.order || 0 %>" 
+                      data-slug="<%= page.slug %>"
+                      min="0"
+                      step="1"
+                    />
+                  </td>
+                  <td>
+                    <div class="action-buttons">
+                      <a href="/admin/edit/<%= page.slug %>" class="btn btn-primary btn-small">Edit</a>
+                      <button type="button" class="btn btn-danger btn-small" onclick="confirmDelete('<%= page.slug %>', '<%= page.title %>')">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          <button type="submit" class="btn btn-primary save-order-btn">Save Order</button>
+        </form>
+      <% } else { %>
+        <div class="empty-state">
+          <p>No pages yet.</p>
+          <a href="/admin/create" class="btn btn-primary">Create your first page</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script src="/static/admin/admin.js"></script>
+</body>
+</html>

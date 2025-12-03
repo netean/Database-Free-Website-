@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Admin</title>
+  <link rel="stylesheet" href="/static/admin/admin.css">
+</head>
+<body>
+  <div class="admin-container">
+    <header class="admin-header">
+      <h1>Site Settings</h1>
+      <nav class="admin-nav">
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/create">Create New</a>
+        <a href="/admin/themes">Themes</a>
+        <a href="/admin/settings" class="active">Settings</a>
+        <a href="/logout">Logout</a>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <% if (message) { %>
+        <div class="message <%= messageType %>"><%= message %></div>
+      <% } %>
+
+      <section class="settings-section">
+        <h2>Site Configuration</h2>
+        <form action="/admin/settings/site" method="POST" class="settings-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          
+          <div class="form-group">
+            <label for="siteName">Site Name</label>
+            <input 
+              type="text" 
+              id="siteName" 
+              name="siteName" 
+              value="<%= settings.siteName %>" 
+              required
+              placeholder="My Blog"
+            >
+            <small>This name appears in the header of all pages</small>
+          </div>
+
+          <div class="form-group">
+            <label for="footerText">Footer Text</label>
+            <input 
+              type="text" 
+              id="footerText" 
+              name="footerText" 
+              value="<%= settings.footerText %>" 
+              required
+              placeholder="Powered by Markdown"
+            >
+            <small>This text appears in the footer after the copyright and site name</small>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save Site Settings</button>
+        </form>
+      </section>
+
+      <section class="settings-section">
+        <h2>User Access Control</h2>
+        <p class="help-text">
+          Control who can access the admin interface. Leave empty to allow all authenticated Google users.
+          Add email addresses to restrict access to specific users only.
+        </p>
+
+        <form action="/admin/settings/users" method="POST" class="settings-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          
+          <div class="form-group">
+            <label for="allowedUsers">Allowed Users (one email per line)</label>
+            <textarea 
+              id="allowedUsers" 
+              name="allowedUsers" 
+              rows="6"
+              placeholder="user1@example.com&#10;user2@example.com"
+            ><%= settings.allowedUsers.join('\n') %></textarea>
+            <small>Current user: <%= user.email %></small>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save User Settings</button>
+        </form>
+
+        <% if (settings.allowedUsers && settings.allowedUsers.length > 0) { %>
+          <div class="allowed-users-list">
+            <h3>Currently Allowed Users:</h3>
+            <ul>
+              <% settings.allowedUsers.forEach(email => { %>
+                <li><%= email %></li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } else { %>
+          <div class="info-box">
+            <strong>Note:</strong> All authenticated Google users can currently access the admin interface.
+          </div>
+        <% } %>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
