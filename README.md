@@ -25,8 +25,8 @@ A lightweight, file-based blog and website system designed for resource-constrai
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/markdown-blog-system.git
-cd markdown-blog-system
+git clone [https://github.com/yourusername/markdown-blog-system.git](https://github.com/netean/Database-Free-Website-.git)
+cd Database-Free-Website
 ```
 
 ### 2. Install Dependencies
