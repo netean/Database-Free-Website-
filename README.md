@@ -2,6 +2,8 @@
 
 A lightweight, file-based blog and website system designed for resource-constrained Linux environments like Raspberry Pi. No database required - all content is stored in markdown files.
 
+====== 99% Vibe Coded ::: So no assumption should be made about security of this application. =========
+
 ## Features
 
 - 📝 Markdown-based content management
